@@ -9,17 +9,20 @@
 #include <utility>
 #include <boost/filesystem.hpp>
 #include <sys/stat.h>
+#include <opencv2/opencv.hpp>
+
+#include "helpers.h"
 
 using namespace boost::filesystem;
 
 
-inline bool file_exists(const std::string& name) {
+bool Utils::file_exists(const std::string& name) {
     struct stat buffer;
     return (stat (name.c_str(), &buffer) == 0);
 }
 
 template<class T, class K>
-std::vector<std::pair<T, K>> zip(std::vector<T> i1, std::vector<K> i2) {
+std::vector<std::pair<T, K>> Utils::zip(std::vector<T> i1, std::vector<K> i2) {
     std::vector<std::pair<T, K>> new_vector = {};
     std::transform(i1.begin(),
                    i1.end(),
@@ -31,7 +34,7 @@ std::vector<std::pair<T, K>> zip(std::vector<T> i1, std::vector<K> i2) {
     return new_vector;
 }
 
-std::string base_filename(std::string filename) {
+std::string Utils::base_filename(std::string filename) {
     std::string start = std::move(filename);
     std::string delimiter = ".";
 
@@ -43,7 +46,7 @@ std::string base_filename(std::string filename) {
     return token;
 }
 
-std::string base_path(std::string filepath) {
+std::string Utils::base_path(std::string filepath) {
     std::string start = std::move(filepath);
     std::string delimiter = "/";
 
@@ -58,14 +61,14 @@ std::string base_path(std::string filepath) {
     return start;
 }
 
-std::string get_last(const std::string &str) {
+std::string Utils::get_last(const std::string &str) {
     if (str.length() <= 1) {
         return str;
     }
     return str.substr(str.length() - 2, str.length() - 1);
 }
 
-std::string make_path(std::vector<std::string> path_pieces) {
+std::string Utils::make_path(std::vector<std::string> path_pieces) {
     std::string output;
 
     for (const auto &v : path_pieces) {
@@ -83,7 +86,7 @@ std::string make_path(std::vector<std::string> path_pieces) {
     return output;
 }
 
-std::vector<std::string> list_directory(std::string folder_to_read) {
+std::vector<std::string> Utils::list_directory(std::string folder_to_read) {
     path p(folder_to_read);
 
     std::vector<std::string> outputFiles = {};

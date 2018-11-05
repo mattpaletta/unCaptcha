@@ -1,6 +1,7 @@
 //
 // Created by Matthew on 2018-11-04.
 //
+#include "helpers.h"
 
 #ifndef CAPTCHA_MODEL_H
 #define CAPTCHA_MODEL_H
@@ -9,7 +10,6 @@
 #include <string>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
-#include "helpers.cpp"
 
 using namespace std;
 
@@ -35,7 +35,7 @@ class Model {
         vector<string> labels = {};
 
         void process_images(const string &training_set_dir) {
-            for(const auto &filename : list_directory(training_set_dir)) {
+            for(const auto &filename : Utils::list_directory(training_set_dir)) {
                 cv::Mat image, grey, resized;
 
                 image = cv::imread(filename);
@@ -43,7 +43,7 @@ class Model {
 
                 cv::resize(grey, resized, resized.size(), 20, 20, cv::INTER_NEAREST);
 
-                auto label = base_filename(base_path(filename));
+                auto label = Utils::base_filename(Utils::base_path(filename));
 
 
                 data.push_back(resized);

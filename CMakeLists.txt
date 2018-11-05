@@ -7,9 +7,9 @@ set(CMAKE_CXX_STANDARD 14)
 #set(CMAKE_CXX_FLAGS -std=c++1z)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(SOURCE_FILES main.cpp Model.cpp Model.h)
+set(SOURCE_FILES main.cpp Model helpers)
 
-#include(ExternalProject)
+include(ExternalProject)
 #
 #set(CMAKE_C_FLAGS "-Wall -g")
 #set(BAMTOOLS_ROOT "${CMAKE_CURRENT_BINARY_DIR}/external")
@@ -32,6 +32,24 @@ set(SOURCE_FILES main.cpp Model.cpp Model.h)
 #add_library(libcppitertools INTERFACE)
 #add_dependencies(libcppitertools cppitertools)
 #include_directories(${BAMTOOLS_INCLUDE_DIRS})
+
+set(EXTERNAL_INSTALL_ROOT "${CMAKE_CURRENT_BINARY_DIR}/externa/")
+set(TENSORFLOW_INCLUDE_DIRS "${BAMTOOLS_ROOT}/src/tensorflow")
+
+ExternalProject_Add(tensorflowlib
+        PREFIX ${EXTERNAL_INSTALL_ROOT}
+        GIT_REPOSITORY https://github.com/tensorflow/tensorflow.git
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND basel build
+        INSTALL_COMMAND ""
+#        BINARY_DIR ${BAMTOOLS_ROOT}
+#        INSTALL_DIR ${BAMTOOLS_ROOT}
+#        CMAKE_ARGS ${bamtools_CMAKE_ARGS}
+        )
+
+add_library(libcppitertools INTERFACE)
+add_dependencies(libcppitertools cppitertools)
+include_directories(${BAMTOOLS_INCLUDE_DIRS})
 
 find_package(OpenCV REQUIRED)
 

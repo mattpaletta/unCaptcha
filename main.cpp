@@ -1,9 +1,17 @@
-//#include <boost/assign/list_of.hpp>
+#include <boost/assign/list_of.hpp>
+#include <boost/filesystem.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include "Model.h"
 
-#include "helpers.cpp"
+#include <vector>
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <utility>
+
+#include "Model.h"
+#include "helpers.h"
+
 
 const std::string ROOT_FOLDER = "/Users/Matthew/Downloads/solving_captchas_code_examples/";
 const std::string CAPTCHA_IMAGE_FOLDER = ROOT_FOLDER + "generated_captcha_images";
@@ -96,9 +104,9 @@ void read_image(const std::string &filename) {
             return lhs.x < rhs.x;
         });
 
-        auto base_name = base_filename(base_path(filename));
+        auto base_name = Utils::base_filename(Utils::base_path(filename));
         std::vector<char> captcha_text(base_name.begin(), base_name.end());
-        auto combined = zip(captcha_text, letter_image_regions);
+        auto combined = Utils::zip(captcha_text, letter_image_regions);
 
         for (auto curr : combined) {
             auto letter_text = curr.first;
@@ -112,7 +120,7 @@ void read_image(const std::string &filename) {
             cv::Mat Y;
             grey2(cv::Rect(x, y, width, height)).copyTo(Y);
 
-            auto save_path = make_path({OUTPUT_FOLDER, std::string(1, letter_text)});
+            auto save_path = Utils::make_path({OUTPUT_FOLDER, std::string(1, letter_text)});
 
             boost::filesystem::path odir(OUTPUT_FOLDER);
             if (boost::filesystem::create_directory(odir)) {
@@ -128,7 +136,7 @@ void read_image(const std::string &filename) {
             char output_file_name[9];
             sprintf(output_file_name, "%06d.png", count);
 
-            auto output_file_path = make_path({save_path, output_file_name});
+            auto output_file_path = Utils::make_path({save_path, output_file_name});
 
             cv::imwrite(output_file_path, Y);
 
@@ -138,8 +146,8 @@ void read_image(const std::string &filename) {
 }
 
 int main() {
-//    auto workingFiles = list_directory(CAPTCHA_IMAGE_FOLDER);
-//    std::for_each(workingFiles.begin(), workingFiles.end(), read_image);
+    auto workingFiles = Utils::list_directory(CAPTCHA_IMAGE_FOLDER);
+    std::for_each(workingFiles.begin(), workingFiles.end(), read_image);
 
     Model mdl;
 //    std::cout << mdl.getName() << std::endl;
