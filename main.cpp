@@ -8,12 +8,12 @@
 #include <iostream>
 #include <algorithm>
 #include <utility>
+#include <cmrc/cmrc.hpp>
 
 #include "Model.h"
 #include "helpers.h"
 
-
-const std::string ROOT_FOLDER = "/Users/Matthew/Downloads/solving_captchas_code_examples/";
+const std::string ROOT_FOLDER = "./";
 const std::string CAPTCHA_IMAGE_FOLDER = ROOT_FOLDER + "generated_captcha_images";
 const std::string OUTPUT_FOLDER = ROOT_FOLDER + "extracted_letter_images";
 
