@@ -17,7 +17,8 @@ class Utils{
 public:
     static inline bool file_exists(const std::string& name);
 
-     template<typename T, typename K> static std::vector<std::pair<T, K>> zip(std::vector<T> i1, std::vector<K> i2);
+//    template<typename T, typename K>
+    static std::vector<std::pair<char, cv::Rect>> zip(std::vector<char> i1, std::vector<cv::Rect> i2);
 
     static std::string base_filename(std::string filename);
 
@@ -29,6 +30,5 @@ public:
 
     static std::vector<std::string> list_directory(std::string folder_to_read);
 };
-
 
 #endif //CAPTCHA_HELPERS_H

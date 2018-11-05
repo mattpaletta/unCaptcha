@@ -146,8 +146,8 @@ void read_image(const std::string &filename) {
 }
 
 int main() {
-    auto workingFiles = Utils::list_directory(CAPTCHA_IMAGE_FOLDER);
-    std::for_each(workingFiles.begin(), workingFiles.end(), read_image);
+//    auto workingFiles = Utils::list_directory(CAPTCHA_IMAGE_FOLDER);
+//    std::for_each(workingFiles.begin(), workingFiles.end(), read_image);
 
     Model mdl;
 //    std::cout << mdl.getName() << std::endl;

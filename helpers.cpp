@@ -10,26 +10,25 @@
 #include <boost/filesystem.hpp>
 #include <sys/stat.h>
 #include <opencv2/opencv.hpp>
-
 #include "helpers.h"
 
 using namespace boost::filesystem;
 
 
 bool Utils::file_exists(const std::string& name) {
-    struct stat buffer;
+    struct stat buffer{};
     return (stat (name.c_str(), &buffer) == 0);
 }
 
-template<class T, class K>
-std::vector<std::pair<T, K>> Utils::zip(std::vector<T> i1, std::vector<K> i2) {
-    std::vector<std::pair<T, K>> new_vector = {};
+//template <class T, class K>
+std::vector<std::pair<char, cv::Rect>> Utils::zip(std::vector<char> i1, std::vector<cv::Rect> i2) {
+    std::vector<std::pair<char, cv::Rect>> new_vector = {};
     std::transform(i1.begin(),
                    i1.end(),
                    i2.begin(),
                    std::back_inserter(new_vector),
                    [](const auto& aa, const auto& bb)  {
-                       return std::pair<T, K>{aa, bb};
+                       return std::pair<char, cv::Rect>{aa, bb};
                    });
     return new_vector;
 }
@@ -101,9 +100,9 @@ std::vector<std::string> Utils::list_directory(std::string folder_to_read) {
     }
 
     std::cout << "Found files: " << std::endl;
-//    for (const auto &v : outputFiles) {
-//        std::cout << v << std::endl;
-//    }
+    for (const auto &v : outputFiles) {
+        std::cout << v << std::endl;
+    }
 
     return outputFiles;
 }

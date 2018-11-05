@@ -1,8 +1,6 @@
 //
 // Created by Matthew on 2018-11-04.
 //
-#include "helpers.h"
-
 #ifndef CAPTCHA_MODEL_H
 #define CAPTCHA_MODEL_H
 
@@ -10,6 +8,7 @@
 #include <string>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
+#include "helpers.h"
 
 using namespace std;
 

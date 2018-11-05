@@ -33,23 +33,26 @@ include(ExternalProject)
 #add_dependencies(libcppitertools cppitertools)
 #include_directories(${BAMTOOLS_INCLUDE_DIRS})
 
-set(EXTERNAL_INSTALL_ROOT "${CMAKE_CURRENT_BINARY_DIR}/externa/")
-set(TENSORFLOW_INCLUDE_DIRS "${BAMTOOLS_ROOT}/src/tensorflow")
+set(EXTERNAL_INSTALL_ROOT "${CMAKE_CURRENT_BINARY_DIR}/external")
+set(TENSORFLOW_INCLUDE_DIRS "${EXTERNAL_INSTALL_ROOT}/src/tensorflow")
 
-ExternalProject_Add(tensorflowlib
+message(${TENSORFLOW_INCLUDE_DIRS})
+
+ExternalProject_Add(tensorflow
         PREFIX ${EXTERNAL_INSTALL_ROOT}
         GIT_REPOSITORY https://github.com/tensorflow/tensorflow.git
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND basel build
+        CONFIGURE_COMMAND sh ${TENSORFLOW_INCLUDE_DIRS}/configure \n \n \n \n \n
+        BUILD_COMMAND bazel build
         INSTALL_COMMAND ""
 #        BINARY_DIR ${BAMTOOLS_ROOT}
-#        INSTALL_DIR ${BAMTOOLS_ROOT}
+#        BUILD_DIR ${TENSORFLOW_INCLUDE_DIRS}
+        INSTALL_DIR ${TENSORFLOW_INCLUDE_DIRS}
 #        CMAKE_ARGS ${bamtools_CMAKE_ARGS}
         )
 
-add_library(libcppitertools INTERFACE)
-add_dependencies(libcppitertools cppitertools)
-include_directories(${BAMTOOLS_INCLUDE_DIRS})
+add_library(tensorflowlib)
+add_dependencies(tensorflowlib tensorflow)
+include_directories(${TENSORFLOW_INCLUDE_DIRS})
 
 find_package(OpenCV REQUIRED)
 
@@ -63,4 +66,4 @@ if(Boost_FOUND)
     add_executable(Captcha ${SOURCE_FILES})
 endif()
 
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${OpenCV_LIBS})
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${OpenCV_LIBS} tensorflowlib)
