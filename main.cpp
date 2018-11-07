@@ -8,12 +8,11 @@
 #include <iostream>
 #include <algorithm>
 #include <utility>
-#include <cmrc/cmrc.hpp>
 
 #include "Model.h"
 #include "helpers.h"
 
-const std::string ROOT_FOLDER = "./";
+const std::string ROOT_FOLDER = "";
 const std::string CAPTCHA_IMAGE_FOLDER = ROOT_FOLDER + "generated_captcha_images";
 const std::string OUTPUT_FOLDER = ROOT_FOLDER + "extracted_letter_images";
 
@@ -146,8 +145,8 @@ void read_image(const std::string &filename) {
 }
 
 int main() {
-//    auto workingFiles = Utils::list_directory(CAPTCHA_IMAGE_FOLDER);
-//    std::for_each(workingFiles.begin(), workingFiles.end(), read_image);
+    auto workingFiles = Utils::list_directory(CAPTCHA_IMAGE_FOLDER);
+    std::for_each(workingFiles.begin(), workingFiles.end(), read_image);
 
     Model mdl;
 //    std::cout << mdl.getName() << std::endl;
