@@ -1,0 +1,3 @@
+[submodule "DeepCpp"]
+	path = DeepCpp
+	url = https://github.com/mattpaletta/DeepCpp.git

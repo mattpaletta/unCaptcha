@@ -1,23 +1,15 @@
 //
 // Created by Matthew on 2018-11-04.
 //
-#ifndef CAPTCHA_MODEL_H
-#define CAPTCHA_MODEL_H
+#pragma once
 
 #include <vector>
 #include <string>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
 #include "helpers.h"
-#include "CNN/cnn.h"
 
 using namespace std;
-
-struct case_t
-{
-    tensor_t<float> data;
-    tensor_t<float> out;
-};
 
 class Model {
 public:
@@ -25,6 +17,8 @@ public:
 
     }
 
+	void train(unsigned int ep, const string &training_dir);
+	/*
     void train(unsigned int ep, const string &training_dir) {
         auto cases = process_images(training_dir);
 
@@ -157,7 +151,5 @@ private:
             }
         }
     }
+	*/
 };
-
-
-#endif //CAPTCHA_MODEL_H
