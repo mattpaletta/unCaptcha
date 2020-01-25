@@ -8,13 +8,12 @@
 #include <iostream>
 #include <algorithm>
 #include <utility>
+#include <experimental/filesystem>
 
 #include "Model.h"
 #include "helpers.h"
 
 const std::string ROOT_FOLDER = "";
-const std::string CAPTCHA_IMAGE_FOLDER = ROOT_FOLDER + "generated_captcha_images";
-const std::string OUTPUT_FOLDER = ROOT_FOLDER + "extracted_letter_images";
 
 std::map<std::string, int> counts = {
         {"A", 1},
@@ -54,7 +53,7 @@ std::map<std::string, int> counts = {
         {"8", 1},
         {"9", 1}};
 
-void read_image(const std::string &filename) {
+void read_image(const std::string &filename, const std::string output_folder) {
     std::cout << "Processing file: " + filename << std::endl;
 
     cv::Mat image, grey, grey2, thresholded;
@@ -119,11 +118,11 @@ void read_image(const std::string &filename) {
             cv::Mat Y;
             grey2(cv::Rect(x, y, width, height)).copyTo(Y);
 
-            auto save_path = Utils::make_path({OUTPUT_FOLDER, std::string(1, letter_text)});
+            auto save_path = Utils::make_path({output_folder, std::string(1, letter_text)});
 
-            boost::filesystem::path odir(OUTPUT_FOLDER);
+            boost::filesystem::path odir(output_folder);
             if (boost::filesystem::create_directory(odir)) {
-                std::cerr << "Directory Created: "<< OUTPUT_FOLDER << std::endl;
+                std::cerr << "Directory Created: "<< output_folder << std::endl;
             }
 
             boost::filesystem::path dir(save_path);
@@ -144,9 +143,30 @@ void read_image(const std::string &filename) {
     }
 }
 
+bool generate_images_if_not_exists(const std::string input_folder, const std::string output_folder) {
+	if (!std::experimental::filesystem::exists(input_folder)) {
+		std::cout << "Failed to find input folder" << std::endl;
+		return false;
+	}
+
+	auto existingFiles = Utils::list_directory(output_folder);
+	if (existingFiles.size() > 0) {
+		std::cout << "Output files already exist" << std::endl;
+		return true;
+	}
+
+	std::cout << "Extracting files" << std::endl;
+	auto workingFiles = Utils::list_directory(input_folder);
+	for (auto w : workingFiles) { read_image(w, output_folder); }
+
+	return true;
+}
+
 int main() {
-//    auto workingFiles = Utils::list_directory(CAPTCHA_IMAGE_FOLDER);
-//    std::for_each(workingFiles.begin(), workingFiles.end(), read_image);
+	const std::string OUTPUT_FOLDER = ROOT_FOLDER + "extracted_letter_images";
+	const std::string CAPTCHA_IMAGE_FOLDER = ROOT_FOLDER + "generated_captcha_images";
+
+	assert(generate_images_if_not_exists(CAPTCHA_IMAGE_FOLDER, OUTPUT_FOLDER));
 
     Model mdl;
     mdl.train(10, CAPTCHA_IMAGE_FOLDER);
